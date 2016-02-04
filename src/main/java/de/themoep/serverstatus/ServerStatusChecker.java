@@ -7,7 +7,11 @@ import net.md_5.bungee.api.scheduler.ScheduledTask;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,7 +35,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ServerStatusChecker {
     private final ServerStatus plugin;
-    private ScheduledTask pingTask;
+    private List<ScheduledTask> pingTask = new ArrayList<ScheduledTask>();
 
     private Map<String, Boolean> statusMap = new ConcurrentHashMap<String, Boolean>();
     private Set<String> statusSetManually = new HashSet<String>();
@@ -42,22 +46,74 @@ public class ServerStatusChecker {
 
     public void start() {
         stop();
-        if(plugin.getConfig().getInt("checkinterval", 10) <= 0) {
-            return;
-        }
-        pingTask = plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
-            public void run() {
-                if(plugin.isEnabled()) {
-                    refreshStatusMap();
-                } else {
-                    stop();
+        int pingOnline = plugin.getConfig().getInt("checkinterval.online", 10);
+        int pingOffline = plugin.getConfig().getInt("checkinterval.offline", 10);
+        if(pingOnline == pingOffline) {
+            if(pingOnline == 0)
+                return;
+            pingTask.add(plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
+                public void run() {
+                    if(plugin.isEnabled()) {
+                        refreshStatusMap(plugin.getProxy().getServers().values());
+                    } else {
+                        stop();
+                    }
                 }
+            }, 10, pingOnline, TimeUnit.SECONDS));
+        } else {
+            if(pingOnline != 0) {
+                pingTask.add(plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
+                    public void run() {
+                        if(plugin.isEnabled()) {
+                            refreshStatusMap(getOnlineServers());
+                        } else {
+                            stop();
+                        }
+                    }
+                }, 10, pingOnline, TimeUnit.SECONDS));
             }
-        }, 10, plugin.getConfig().getInt("checkinterval", 10), TimeUnit.SECONDS);
+            if(pingOffline != 0) {
+                pingTask.add(plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
+                    public void run() {
+                        if(plugin.isEnabled()) {
+                            refreshStatusMap(getOfflineServers());
+                        } else {
+                            stop();
+                        }
+                    }
+                }, 10, pingOffline, TimeUnit.SECONDS));
+            }
+        }
     }
 
-    public void refreshStatusMap() {
-        for(final ServerInfo server : plugin.getProxy().getServers().values()) {
+    public Collection<ServerInfo> getOnlineServers() {
+        List<ServerInfo> onlineServers = new ArrayList<ServerInfo>();
+        for(Map.Entry<String, Boolean> entry : getStatusMap().entrySet()) {
+            if(entry.getValue() != null && entry.getValue()) {
+                ServerInfo server = plugin.getProxy().getServerInfo(entry.getKey());
+                if(server != null) {
+                    onlineServers.add(server);
+                }
+            }
+        }
+        return onlineServers;
+    }
+
+    public Collection<ServerInfo> getOfflineServers() {
+        List<ServerInfo> offlineServers = new ArrayList<ServerInfo>();
+        for(Map.Entry<String, Boolean> entry : getStatusMap().entrySet()) {
+            if(entry.getValue() != null && !entry.getValue()) {
+                ServerInfo server = plugin.getProxy().getServerInfo(entry.getKey());
+                if(server != null) {
+                    offlineServers.add(server);
+                }
+            }
+        }
+        return offlineServers;
+    }
+
+    public void refreshStatusMap(Collection<ServerInfo> servers) {
+        for(final ServerInfo server : servers) {
             if(statusSetManually.contains(server.getName()))
                 return;
 
@@ -109,9 +165,10 @@ public class ServerStatusChecker {
     public void stop() {
         statusMap = new ConcurrentHashMap<String, Boolean>();
         statusSetManually = new HashSet<String>();
-        if(pingTask != null) {
-            pingTask.cancel();
-            pingTask = null;
+        Iterator<ScheduledTask> taskIt = pingTask.iterator();
+        while(taskIt.hasNext()) {
+            taskIt.next().cancel();
+            taskIt.remove();
         }
     }
 
