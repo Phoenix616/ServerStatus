@@ -22,7 +22,9 @@ ServerStatus.preventswitch.bypass | Bypass the switch-to-offline-server-preventi
 ### Config:
 ```yaml
 # Checkintervall in seconds
-checkinterval: 10
+checkinterval:
+  online: 10
+  offline: 30
 messages:
   preventswitch: "&cYou can't join &e%server%&c! The server is offline!"
   info:
