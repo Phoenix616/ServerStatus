@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Bungee Plugins
+ * ServerStatus
  * Copyright (C) 2016 Max Lee (https://github.com/Phoenix616/)
  * <p/>
  * This program is free software: you can redistribute it and/or modify
@@ -103,6 +103,9 @@ public class ServerStatusChecker {
         return statusMap.get(server.getName());
     }
 
+    /**
+     * hammertime
+     */
     public void stop() {
         statusMap = new ConcurrentHashMap<String, Boolean>();
         statusSetManually = new HashSet<String>();

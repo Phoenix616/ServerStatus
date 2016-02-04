@@ -3,14 +3,13 @@ package de.themoep.serverstatus;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.api.scheduler.ScheduledTask;
 import net.md_5.bungee.config.Configuration;
 
 import java.io.IOException;
 import java.util.Map;
 
 /**
- * Bungee Plugins
+ * ServerStatus
  * Copyright (C) 2016 Max Lee (https://github.com/Phoenix616/)
  * <p/>
  * This program is free software: you can redistribute it and/or modify

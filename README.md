@@ -16,7 +16,6 @@ The setoffline option will stop the plugin from checking the status of the serve
 - ServerStatus.preventswitch.bypass - Bypass the switch-to-offline-server-prevention, usefull for when you manually marked a as server for maintance
 
 ### Config:
-
 ```yaml
 # Checkintervall in seconds
 checkinterval: 10
@@ -26,3 +25,20 @@ messages:
     online: "&e%server% &ais now online!"
     offline: "&e%server% &cis now offline!"
 ```
+
+### License:
+Copyright (C) 2016 Max Lee (https://github.com/Phoenix616/)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the Mozilla Public License as published by
+the Mozilla Foundation, version 2.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+Mozilla Public License v2.0 for more details.
+
+You should have received a copy of the Mozilla Public License v2.0
+along with this program. If not, see <http://mozilla.org/MPL/2.0/>.
+
+The YamlConfig class is based upon work from [zaiyers](https://github.com/zaiyers/)

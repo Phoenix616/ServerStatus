@@ -8,7 +8,7 @@ import net.md_5.bungee.api.plugin.Command;
 import java.util.Map;
 
 /**
- * Bungee Plugins
+ * ServerStatus
  * Copyright (C) 2016 Max Lee (https://github.com/Phoenix616/)
  * <p/>
  * This program is free software: you can redistribute it and/or modify

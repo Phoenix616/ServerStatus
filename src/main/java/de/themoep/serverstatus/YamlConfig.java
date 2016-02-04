@@ -5,7 +5,6 @@ package de.themoep.serverstatus;
  * https://github.com/zaiyers/Channels/blob/master/src/main/java/net/zaiyers/Channels/config/YamlConfig.java
  */
 
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
