@@ -1,0 +1,4 @@
+name: ${project.artifactId}
+main: de.themoep.serverstatus.ServerStatus
+version: '${minecraft.plugin.version}'
+author: Phoenix616

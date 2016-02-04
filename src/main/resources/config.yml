@@ -1,0 +1,7 @@
+# Checkintervall in seconds
+checkinterval: 10
+messages:
+  preventswitch: "&cYou can't join &e%server%&c! The server is offline!"
+  info:
+    online: "&e%server% &ais now online!"
+    offline: "&e%server% &cis now offline!"
