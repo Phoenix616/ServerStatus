@@ -44,7 +44,7 @@ public class ServerStatusCommand extends Command {
                     return;
                 } else if("refresh".equalsIgnoreCase(args[0])) {
                     if(plugin.isEnabled()) {
-                        plugin.getChecker().refreshStatusMap();
+                        plugin.getChecker().refreshStatusMap(plugin.getProxy().getServers().values());
                         sender.sendMessage(ChatColor.YELLOW + "Refreshed server status map!");
                     } else {
                         sender.sendMessage(ChatColor.YELLOW + plugin.getDescription().getName() + ChatColor.RED + " did not properly enable!");
