@@ -67,7 +67,16 @@ public class ServerStatusCommand extends Command {
             } else if(plugin.isEnabled()) {
                 sender.sendMessage(ChatColor.YELLOW + plugin.getDescription().getName() + " v" + plugin.getDescription().getVersion());
                 for(Map.Entry<String, Boolean> entry : plugin.getChecker().getStatusMap().entrySet()) {
-                    sender.sendMessage(" " + ChatColor.YELLOW + entry.getKey() + ChatColor.WHITE + ": " + (entry.getValue() ? ChatColor.GREEN + "online" : ChatColor.RED + "offline"));
+                    String msg = " " + ChatColor.YELLOW + entry.getKey() + ChatColor.WHITE + ": ";
+                    if(entry.getValue()) {
+                        msg += ChatColor.GREEN + "online";
+                    } else {
+                        msg += ChatColor.RED + "offline";
+                    }
+                    if(plugin.getChecker().isManuallySet(entry.getKey())) {
+                        msg += ChatColor.YELLOW + " (manual)";
+                    }
+                    sender.sendMessage(msg);
                 }
             } else {
                 sender.sendMessage(ChatColor.YELLOW + plugin.getDescription().getName() + ChatColor.RED + " did not properly enable!");

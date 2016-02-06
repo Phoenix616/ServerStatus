@@ -184,4 +184,12 @@ public class ServerStatusChecker {
             statusSetManually.add(server.getName());
         }
     }
+
+    public boolean isManuallySet(String serverName) {
+        Boolean manual =  statusMap.get(serverName);
+        if(manual == null) {
+            return false;
+        }
+        return manual;
+    }
 }
