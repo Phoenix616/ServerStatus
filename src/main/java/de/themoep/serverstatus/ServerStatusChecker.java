@@ -2,6 +2,7 @@ package de.themoep.serverstatus;
 
 import com.google.common.collect.ImmutableMap;
 import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 
 import java.io.IOException;
@@ -146,7 +147,13 @@ public class ServerStatusChecker {
         if(oldStatus != null && oldStatus != online) {
             Map<String, String> repl = ImmutableMap.of("server", server.getName());
             String msg = online ? plugin.getMessage("info.online", repl) : plugin.getMessage("info.offline", repl);
-            plugin.broadcast(plugin.getDescription().getName() + ".info", msg);
+
+            plugin.getLogger().info(msg);
+            for(ProxiedPlayer player : plugin.getProxy().getPlayers()) {
+                if(player.hasPermission(plugin.getDescription().getName() + ".info") && server.canAccess(player)) {
+                    player.sendMessage(msg);
+                }
+            }
         }
     }
 
