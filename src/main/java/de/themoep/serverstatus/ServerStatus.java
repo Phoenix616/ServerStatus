@@ -65,10 +65,14 @@ public class ServerStatus extends Plugin {
         return statusChecker;
     }
 
-    public void broadcast(String permission, String message) {
+    public void broadcast(String message, String... permissions) {
         getLogger().info(message);
         for(ProxiedPlayer player : getProxy().getPlayers()) {
-            if(player.hasPermission(permission)) {
+            boolean hasAllPerm = true;
+            for(String permission : permissions) {
+                hasAllPerm = player.hasPermission(permission);
+            }
+            if(hasAllPerm) {
                 player.sendMessage(message);
             }
         }
