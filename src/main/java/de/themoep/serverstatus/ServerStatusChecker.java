@@ -62,6 +62,7 @@ public class ServerStatusChecker {
                 }
             }, 10, pingOnline, TimeUnit.SECONDS));
         } else {
+            refreshStatusMap(plugin.getProxy().getServers().values());
             if(pingOnline != 0) {
                 pingTask.add(plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
                     public void run() {
@@ -193,10 +194,6 @@ public class ServerStatusChecker {
     }
 
     public boolean isManuallySet(String serverName) {
-        Boolean manual =  statusMap.get(serverName);
-        if(manual == null) {
-            return false;
-        }
-        return manual;
+        return statusSetManually.contains(serverName);
     }
 }
