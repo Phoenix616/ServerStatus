@@ -50,4 +50,4 @@ All Server* classes are licensed under the MLPv2:
 > along with this program. If not, see <http://mozilla.org/MPL/2.0/>.
 
 
-The YamlConfig class is based upon work from [zaiyers](https://github.com/zaiyers/)
+The FileConfiguration class is licensed under the [Nietzsche Public License v0.6](http://copyfree.org/content/standard/licenses/nietzschepl/license.txt)

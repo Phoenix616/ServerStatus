@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class ServerStatus extends Plugin {
 
-    private YamlConfig yamlConfig;
+    private FileConfiguration fileConfig;
     private boolean enabled;
     private ServerStatusChecker statusChecker;
 
@@ -38,12 +38,12 @@ public class ServerStatus extends Plugin {
     }
 
     public Configuration getConfig() {
-        return yamlConfig.getCfg();
+        return fileConfig.getConfiguration();
     }
 
     public boolean loadConfig() {
         try {
-            yamlConfig = new YamlConfig(this, "config.yml");
+            fileConfig = new FileConfiguration(this, "config.yml");
             statusChecker.start();
             return true;
         } catch (IOException e) {
