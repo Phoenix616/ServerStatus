@@ -6,6 +6,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,7 +34,8 @@ public class ServerStatus extends Plugin {
     public void onEnable() {
         statusChecker = new ServerStatusChecker(this);
         enabled = loadConfig();
-        getProxy().getPluginManager().registerCommand(this, new ServerStatusCommand(this, "serverstatus", getDescription().getName() + ".command", "ss", "status"));
+        List<String> cmdAliases = getConfig().getStringList("commandaliases");
+        getProxy().getPluginManager().registerCommand(this, new ServerStatusCommand(this, "serverstatus", getDescription().getName() + ".command", cmdAliases.toArray(new String[cmdAliases.size()])));
         getProxy().getPluginManager().registerListener(this, new ServerSwitchListener(this));
     }
 

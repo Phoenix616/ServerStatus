@@ -7,3 +7,6 @@ messages:
   info:
     online: "&e%server% &ais now online!"
     offline: "&e%server% &cis now offline!"
+commandaliases:
+  - ss
+  - status
