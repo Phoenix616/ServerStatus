@@ -63,6 +63,7 @@ public class ServerStatus extends Plugin {
     }
 
     private void registerCommands() {
+        getProxy().getPluginManager().unregisterCommands(this);
         List<String> cmdAliases = getConfig().getStringList("commandaliases");
         getProxy().getPluginManager().registerCommand(this, new ServerStatusCommand(this, "serverstatus", getDescription().getName() + ".command", cmdAliases.toArray(new String[cmdAliases.size()])));
     }
