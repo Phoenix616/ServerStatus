@@ -34,16 +34,18 @@ public class ServerStatus extends Plugin {
     public void onEnable() {
         statusChecker = new ServerStatusChecker(this);
         enabled = loadConfig();
-        List<String> cmdAliases = getConfig().getStringList("commandaliases");
-        getProxy().getPluginManager().registerCommand(this, new ServerStatusCommand(this, "serverstatus", getDescription().getName() + ".command", cmdAliases.toArray(new String[cmdAliases.size()])));
+        registerCommands();
         getProxy().getPluginManager().registerListener(this, new ServerSwitchListener(this));
     }
 
     public Configuration getConfig() {
-        return fileConfig.getConfiguration();
+        if(fileConfig != null) {
+            return fileConfig.getConfiguration();
+        }
+        return new Configuration();
     }
 
-    public boolean loadConfig() {
+    private boolean loadConfig() {
         try {
             fileConfig = new FileConfiguration(this, "config.yml");
             statusChecker.start();
@@ -56,7 +58,13 @@ public class ServerStatus extends Plugin {
 
     public boolean reloadConfig() {
         enabled = loadConfig();
+        registerCommands();
         return enabled;
+    }
+
+    private void registerCommands() {
+        List<String> cmdAliases = getConfig().getStringList("commandaliases");
+        getProxy().getPluginManager().registerCommand(this, new ServerStatusCommand(this, "serverstatus", getDescription().getName() + ".command", cmdAliases.toArray(new String[cmdAliases.size()])));
     }
 
     public boolean isEnabled() {
