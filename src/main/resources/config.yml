@@ -2,6 +2,9 @@
 checkinterval:
   online: 10
   offline: 30
+# Pingtimeout in millisenconds.
+# Increase that if you experience a server going down and up again without actually restarting it
+pingtimeout: 500
 messages:
   preventswitch: "&cYou can't join &e%server%&c! The server is offline!"
   info:

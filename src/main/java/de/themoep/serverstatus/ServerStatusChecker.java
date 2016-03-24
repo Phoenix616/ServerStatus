@@ -37,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 public class ServerStatusChecker {
     private final ServerStatus plugin;
     private List<ScheduledTask> pingTask = new ArrayList<ScheduledTask>();
+    private int pingTimeout = 500;
 
     private Map<String, Boolean> statusMap = new ConcurrentHashMap<String, Boolean>();
     private Set<String> statusSetManually = new HashSet<String>();
@@ -49,6 +50,7 @@ public class ServerStatusChecker {
         stop();
         int pingOnline = plugin.getConfig().getInt("checkinterval.online", 10);
         int pingOffline = plugin.getConfig().getInt("checkinterval.offline", 10);
+        pingTimeout = plugin.getConfig().getInt("pingtimeout", 500);
         if(pingOnline == pingOffline) {
             if(pingOnline == 0)
                 return;
@@ -134,7 +136,7 @@ public class ServerStatusChecker {
     private boolean isReachable(InetSocketAddress address) {
         Socket socket = new Socket();
         try {
-            socket.connect(address, 250);
+            socket.connect(address, pingTimeout);
             socket.close();
             return true;
         } catch(IOException ignored) {
