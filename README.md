@@ -2,7 +2,7 @@
 Small BungeeCord plugin to check the status of connected servers and block players from attempting to connect to offline servers. Builds can be found on the [Minebench.de Jenkins](http://ci.minebench.de/job/ServerStatus/).
 
 ### Commands:
-           /serverstatus              |     (Aliases: /ss and /status)
+/serverstatus                         | (Aliases: /ss and /status)
 ------------------------------------- | -----------------------------------
 /serverstatus                         | Show a list with all the statuses
 /serverstatus reload                  | Reloads the config
@@ -13,7 +13,7 @@ Small BungeeCord plugin to check the status of connected servers and block playe
 The setoffline option will stop the plugin from checking the status of the server until it's set back to online via the command!
 
 ### Permissions:
-            Name                  |             Description
+Name                              | Description
 --------------------------------- | --------------------------------------
 ServerStatus.command              | Access to the command and all its options
 ServerStatus.info                 | Receive information messages about when a server is automatically detected as online or offline
@@ -35,19 +35,20 @@ messages:
 ### License:
 All Server* classes are licensed under the MLPv2:
 
-> Copyright (C) 2016 Max Lee (https://github.com/Phoenix616/)
+```
+ Copyright (C) 2016 Max Lee (https://github.com/Phoenix616/)
 
-> This program is free software: you can redistribute it and/or modify
-> it under the terms of the Mozilla Public License as published by
-> the Mozilla Foundation, version 2.
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the Mozilla Public License as published by
+ the Mozilla Foundation, version 2.
 
-> This program is distributed in the hope that it will be useful,
-> but WITHOUT ANY WARRANTY; without even the implied warranty of
-> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-> Mozilla Public License v2.0 for more details.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ Mozilla Public License v2.0 for more details.
 
-> You should have received a copy of the Mozilla Public License v2.0
-> along with this program. If not, see <http://mozilla.org/MPL/2.0/>.
-
+ You should have received a copy of the Mozilla Public License v2.0
+ along with this program. If not, see <http://mozilla.org/MPL/2.0/>.
+```
 
 The FileConfiguration class is licensed under the [Nietzsche Public License v0.6](http://copyfree.org/content/standard/licenses/nietzschepl/license.txt)
