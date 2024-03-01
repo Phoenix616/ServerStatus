@@ -37,7 +37,7 @@ import java.io.InputStreamReader;
 public class FileConfiguration {
     protected final static ConfigurationProvider yml = ConfigurationProvider.getProvider(YamlConfiguration.class);
 
-    private Plugin plugin;
+    private final Plugin plugin;
 
     private Configuration config;
     private File configFile;

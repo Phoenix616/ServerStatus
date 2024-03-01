@@ -6,8 +6,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -38,11 +38,11 @@ import java.util.concurrent.TimeUnit;
 
 public class ServerStatusChecker {
     private final ServerStatus plugin;
-    private List<ScheduledTask> pingTask = new ArrayList<ScheduledTask>();
+    private List<ScheduledTask> pingTask = new ArrayList<>();
     private int pingTimeout = 500;
 
-    private Map<String, Boolean> statusMap = new ConcurrentHashMap<String, Boolean>();
-    private Set<String> statusSetManually = new HashSet<String>();
+    private Map<String, Boolean> statusMap = new ConcurrentHashMap<>();
+    private Set<String> statusSetManually = new HashSet<>();
 
     public ServerStatusChecker(ServerStatus plugin) {
         this.plugin = plugin;
@@ -56,36 +56,30 @@ public class ServerStatusChecker {
         if(pingOnline == pingOffline) {
             if(pingOnline == 0)
                 return;
-            pingTask.add(plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
-                public void run() {
-                    if(plugin.isEnabled()) {
-                        refreshStatusMap(plugin.getProxy().getServers().values());
-                    } else {
-                        stop();
-                    }
+            pingTask.add(plugin.getProxy().getScheduler().schedule(plugin, () -> {
+                if(plugin.isEnabled()) {
+                    refreshStatusMap(plugin.getProxy().getServers().values());
+                } else {
+                    stop();
                 }
             }, 10, pingOnline, TimeUnit.SECONDS));
         } else {
             refreshStatusMap(plugin.getProxy().getServers().values());
             if(pingOnline != 0) {
-                pingTask.add(plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
-                    public void run() {
-                        if(plugin.isEnabled()) {
-                            refreshStatusMap(getOnlineServers());
-                        } else {
-                            stop();
-                        }
+                pingTask.add(plugin.getProxy().getScheduler().schedule(plugin, () -> {
+                    if(plugin.isEnabled()) {
+                        refreshStatusMap(getOnlineServers());
+                    } else {
+                        stop();
                     }
                 }, 10, pingOnline, TimeUnit.SECONDS));
             }
             if(pingOffline != 0) {
-                pingTask.add(plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
-                    public void run() {
-                        if(plugin.isEnabled()) {
-                            refreshStatusMap(getOfflineServers());
-                        } else {
-                            stop();
-                        }
+                pingTask.add(plugin.getProxy().getScheduler().schedule(plugin, () -> {
+                    if(plugin.isEnabled()) {
+                        refreshStatusMap(getOfflineServers());
+                    } else {
+                        stop();
                     }
                 }, 10, pingOffline, TimeUnit.SECONDS));
             }
@@ -123,19 +117,15 @@ public class ServerStatusChecker {
             if(statusSetManually.contains(server.getName()))
                 return;
 
-            if(server.getPlayers().size() == 0) {
-                plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {
-                    public void run() {
-                        setStatus(server, isReachable(server.getAddress()));
-                    }
-                });
+            if(server.getPlayers().isEmpty()) {
+                plugin.getProxy().getScheduler().runAsync(plugin, () -> setStatus(server, isReachable(server.getSocketAddress())));
             } else {
                 setStatus(server, true);
             }
         }
     }
 
-    private boolean isReachable(InetSocketAddress address) {
+    private boolean isReachable(SocketAddress address) {
         Socket socket = new Socket();
         try {
             socket.connect(address, pingTimeout);
@@ -175,8 +165,8 @@ public class ServerStatusChecker {
      * hammertime
      */
     public void stop() {
-        statusMap = new ConcurrentHashMap<String, Boolean>();
-        statusSetManually = new HashSet<String>();
+        statusMap = new ConcurrentHashMap<>();
+        statusSetManually = new HashSet<>();
         Iterator<ScheduledTask> taskIt = pingTask.iterator();
         while(taskIt.hasNext()) {
             taskIt.next().cancel();
